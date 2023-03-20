@@ -1,6 +1,6 @@
-# EffectConnect Marketplaces - Prestashop 1.7 plugin
+# EffectConnect Marketplaces - Prestashop 8 plugin
 
-Use this plugin to connect your Prestashop 1.7 webshop with EffectConnect Marketplaces. For more information about EffectConnect, go to the [EffectConnect website](https://www.effectconnect.com "EffectConnect Website").
+Use this plugin to connect your Prestashop 8 webshop with EffectConnect Marketplaces. For more information about EffectConnect, go to the [EffectConnect website](https://www.effectconnect.com "EffectConnect Website").
 
 **Important: before installing this plugin please contact the EffectConnect sales department via +31(0)852088432 and/or sales@effectconnect.com so we can provide you with a new EffectConnect account.**
 
@@ -58,11 +58,9 @@ Optional (see explanation below):
 
 When setting up cron tasks make sure to use the correct PHP version that matches your Prestashop installation:
 
-| Prestashop Version | PHP version |
-| ------------- | ------------- |
-| Prestashop 1.7.6.5 | PHP 7.1 - 7.2 |
-| Prestashop 1.7.7.0 | PHP 7.1 - 7.3 |
-| Prestashop 1.7.7.1 | PHP 7.1 - 7.3 |
+| Prestashop Version | PHP version   |
+|--------------------|---------------|
+| Prestashop 8       | PHP 7.2 - 8.2 |
 
 You can check your default PHP version by running `php -v` in your SSH console.
 If the default version does not match the table above, ask your server administrator how to run commands in another PHP version. 
