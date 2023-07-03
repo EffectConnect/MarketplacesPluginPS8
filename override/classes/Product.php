@@ -26,6 +26,8 @@ class Product extends ProductCore
      * @param null $low_stock_threshold
      * @param false $low_stock_alert
      * @param null $mpn
+     * @param null $available_now
+     * @param null $available_later
      * @return array|bool
      * @throws PrestaShopDatabaseException
      * @throws PrestaShopException
@@ -50,7 +52,9 @@ class Product extends ProductCore
         $isbn = '',
         $low_stock_threshold = null,
         $low_stock_alert = false,
-        $mpn = null
+        $mpn = null,
+        $available_now = null,
+        $available_later = null
     ) {
         $exception = null;
 
@@ -76,7 +80,9 @@ class Product extends ProductCore
                 $isbn,
                 $low_stock_threshold,
                 $low_stock_alert,
-                $mpn
+                $mpn,
+                $available_now,
+                $available_later
             );
         } catch (Exception $exception) {}
         $combinationNew = new Combination($id_product_attribute);
