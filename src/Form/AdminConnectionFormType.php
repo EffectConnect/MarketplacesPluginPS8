@@ -6,6 +6,7 @@ use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\CarrierChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\EmployeeChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\ExternalFulfilmentChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\GroupChoiceProvider;
+use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\ImageTypeChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\InvalidEANChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\PaymentModuleChoiceProvider;
 use EffectConnect\Marketplaces\Form\Type\ChoiceProvider\ShopChoiceProvider;
@@ -63,6 +64,11 @@ class AdminConnectionFormType extends TranslatorAwareType
     protected $_employeeChoiceProvider;
 
     /**
+     * @var ImageTypeChoiceProvider
+     */
+    protected $_imageTypeChoiceProvider;
+
+    /**
      * AdminConnectionFormType constructor.
      * @param TranslatorInterface $translator
      * @param array $locales
@@ -73,6 +79,7 @@ class AdminConnectionFormType extends TranslatorAwareType
      * @param ExternalFulfilmentChoiceProvider $externalFulfilmentChoiceProvider
      * @param GroupChoiceProvider $groupChoiceProvider
      * @param EmployeeChoiceProvider $employeeChoiceProvider
+     * @param ImageTypeChoiceProvider $imageTypeChoiceProvider
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -83,7 +90,8 @@ class AdminConnectionFormType extends TranslatorAwareType
         PaymentModuleChoiceProvider $paymentModuleChoiceProvider,
         ExternalFulfilmentChoiceProvider $externalFulfilmentChoiceProvider,
         GroupChoiceProvider $groupChoiceProvider,
-        EmployeeChoiceProvider $employeeChoiceProvider
+        EmployeeChoiceProvider $employeeChoiceProvider,
+        ImageTypeChoiceProvider $imageTypeChoiceProvider
     ) {
         $this->_shopChoiceProvider               = $shopChoiceProvider;
         $this->_invalidEANChoiceProvider         = $invalidEANChoiceProvider;
@@ -92,6 +100,7 @@ class AdminConnectionFormType extends TranslatorAwareType
         $this->_externalFulfilmentChoiceProvider = $externalFulfilmentChoiceProvider;
         $this->_groupChoiceProvider              = $groupChoiceProvider;
         $this->_employeeChoiceProvider           = $employeeChoiceProvider;
+        $this->_imageTypeChoiceProvider          = $imageTypeChoiceProvider;
         parent::__construct($translator, $locales);
     }
 
@@ -160,6 +169,12 @@ class AdminConnectionFormType extends TranslatorAwareType
                 'required'   => true,
                 'label'      => $this->trans('When EAN invalid', 'Modules.Effectconnectmarketplaces.Admin'),
                 'help'       => $this->trans('EffectConnect only supports products with a valid EAN or products without an EAN. Multiple products with the same EAN will only be exported once.', 'Modules.Effectconnectmarketplaces.Admin'),
+            ])
+            ->add('catalog_export_id_image_type', ChoiceType::class, [
+                'choices'    => $this->_imageTypeChoiceProvider->getChoices(),
+                'required'   => false,
+                'label'      => $this->trans('Image type', 'Modules.Effectconnectmarketplaces.Admin'),
+                'help'       => $this->trans('The image type to be exported.', 'Modules.Effectconnectmarketplaces.Admin'),
             ])
             // Order import fields
             ->add('order_import_id_group', ChoiceType::class, [

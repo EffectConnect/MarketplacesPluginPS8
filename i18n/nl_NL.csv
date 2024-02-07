@@ -103,3 +103,7 @@
 "Height","Hoogte"
 "Depth","Diepte"
 "Weight","Gewicht"
+"Use default (image that is displayed on the product page in the backoffice)","Gebruik standaardinstelling (afbeelding die op de productpagina wordt getoond in de backoffice)"
+"Use generated image type %s (%s px x %s px)","Gebruik automatisch gegenereerde afbeeldingstype %s (%s px x %s px)"
+"Image type","Afbeeldingstype"
+"The image type to be exported.","Het formaat van de afbeelding dat wordt geëxporteerd."

@@ -149,6 +149,7 @@ class AbstractApi
                 'catalog_export_ean_leading_zero'           => $connection->catalog_export_ean_leading_zero,
                 'catalog_export_skip_invalid_ean'           => $connection->catalog_export_skip_invalid_ean,
                 'catalog_export_skip_unavailable_for_order' => $connection->catalog_export_skip_unavailable_for_order,
+                'catalog_export_id_image_type'              => $connection->catalog_export_id_image_type,
                 'order_import_id_carrier'                   => $connection->order_import_id_carrier,
                 'order_import_id_payment_module'            => $connection->order_import_id_payment_module,
                 'order_import_send_emails'                  => $connection->order_import_send_emails,

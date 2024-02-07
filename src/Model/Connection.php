@@ -71,6 +71,11 @@ class Connection extends AbstractModel
     public $catalog_export_skip_unavailable_for_order = true;
 
     /**
+     * @var int|null
+     */
+    public $catalog_export_id_image_type;
+
+    /**
      * @var int
      */
     public $order_import_id_group = 0;
@@ -162,6 +167,12 @@ class Connection extends AbstractModel
                 'type'     => self::TYPE_BOOL,
                 'required' => true
             ],
+            'catalog_export_id_image_type' => [
+                'type'       => self::TYPE_INT,
+                'required'   => false,
+                'validate'   => 'isUnsignedInt',
+                'allow_null' => true,
+            ],
             'order_import_id_group' => [
                 'type'     => self::TYPE_INT,
                 'required' => true,
@@ -234,6 +245,7 @@ class Connection extends AbstractModel
                     `catalog_export_ean_leading_zero` TINYINT(1) NOT NULL DEFAULT \'1\',
                     `catalog_export_skip_invalid_ean` TINYINT(1) NOT NULL DEFAULT \'0\',
                     `catalog_export_skip_unavailable_for_order` TINYINT(1) NOT NULL DEFAULT \'1\',
+                    `catalog_export_id_image_type` INT(11) UNSIGNED NULL DEFAULT NULL,
                     `order_import_id_group` INT(11) UNSIGNED NOT NULL,
                     `order_import_id_carrier` INT(11) UNSIGNED NOT NULL,
                     `order_import_id_payment_module` INT(11) UNSIGNED NOT NULL,
@@ -271,6 +283,15 @@ class Connection extends AbstractModel
     public static function addDbFieldOrderImportApiCallTimeout()
     {
         return Db::getInstance()->execute('ALTER TABLE  `' . _DB_PREFIX_ . self::$definition['table'] . '` ADD COLUMN `order_import_api_call_timeout` INT(11) UNSIGNED NULL DEFAULT NULL AFTER `order_import_send_emails`');
+    }
+
+    /**
+     * Version 4.0.7 database migration.
+     * @return bool
+     */
+    public static function addDbFieldCatalogExportImageType()
+    {
+        return Db::getInstance()->execute('ALTER TABLE  `' . _DB_PREFIX_ . self::$definition['table'] . '` ADD COLUMN `catalog_export_id_image_type` INT(11) UNSIGNED NULL DEFAULT NULL AFTER `catalog_export_skip_unavailable_for_order`');
     }
 
     /**

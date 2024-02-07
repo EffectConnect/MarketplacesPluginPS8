@@ -7,6 +7,7 @@ use DOMException;
 use EffectConnect\Marketplaces\Enums\LoggerProcess;
 use EffectConnect\Marketplaces\Exception\InitContextFailedException;
 use EffectConnect\Marketplaces\Helper\LoggerHelper;
+use EffectConnect\Marketplaces\Helper\ProductImageTypeHelper;
 use EffectConnect\Marketplaces\Service\InitContext;
 use EffectConnect\Marketplaces\Service\ProductSearch\ProductSearchProvider;
 use EffectConnect\Marketplaces\Exception\FileCreationFailedException;
@@ -119,6 +120,11 @@ class CatalogExportTransformer extends AbstractTransformer
     protected $_priceFormatter;
 
     /**
+     * @var string|null
+     */
+    protected $_imageType = null;
+
+    /**
      * CatalogExportTransformer constructor.
      *
      * @param InitContext $initContext
@@ -173,6 +179,7 @@ class CatalogExportTransformer extends AbstractTransformer
 
         $this->init($connection);
         $this->loadFeatureData();
+        $this->loadImageType();
 
         $fileLocation = FileHelper::generateFile(static::CONTENT_TYPE, $this->getShopId());
         try {
@@ -565,7 +572,7 @@ class CatalogExportTransformer extends AbstractTransformer
                     $linkRewrite = $product->link_rewrite;
                 }
 
-                $imageUrl = $this->_legacyContext->getContext()->link->getImageLink($linkRewrite, $image['id_image']);
+                $imageUrl = $this->_legacyContext->getContext()->link->getImageLink($linkRewrite, $image['id_image'], $this->_imageType);
                 $productImagesExport[$imageUrl] = [
                     'url'   => $imageUrl,
                     'order' => $sortOrder,
@@ -688,6 +695,22 @@ class CatalogExportTransformer extends AbstractTransformer
                 $this->_featureLanguageData[$languageId][$featureId] = $feature;
             }
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function loadImageType()
+    {
+        $imageType   = null;
+        $imageTypeId = intval($this->getConnection()->catalog_export_id_image_type);
+        if ($imageTypeId > 0) {
+            $imageType = ProductImageTypeHelper::getProductImageTypeById($imageTypeId);
+            if (is_string($imageType) && $this->_configuration->get('PS_HIGHT_DPI')) {
+                $imageType .= '2x';
+            }
+        }
+        $this->_imageType = $imageType;
     }
 
     /**

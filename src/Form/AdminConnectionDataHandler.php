@@ -52,6 +52,7 @@ class AdminConnectionDataHandler implements FormDataHandlerInterface
         $record->catalog_export_ean_leading_zero           = intval($data['catalog_export_ean_leading_zero']);
         $record->catalog_export_skip_invalid_ean           = intval($data['catalog_export_skip_invalid_ean']);
         $record->catalog_export_skip_unavailable_for_order = intval($data['catalog_export_skip_unavailable_for_order']);
+        $record->catalog_export_id_image_type              = $data['catalog_export_id_image_type'] > 0 ? intval($data['catalog_export_id_image_type']) : null;
         $record->order_import_id_group                     = intval($data['order_import_id_group']);
         $record->order_import_id_carrier                   = intval($data['order_import_id_carrier']);
         $record->order_import_id_payment_module            = intval($data['order_import_id_payment_module']);
