@@ -32,7 +32,7 @@ class ProductImageTypeHelper
         $imageType = null;
         $types = self::getProductImagesTypes();
         foreach ($types as $type) {
-            if (is_array($type) && isset($type['id_image_type']) && $type['id_image_type'] === $imageTypeId) {
+            if (is_array($type) && isset($type['id_image_type']) && intval($type['id_image_type']) === $imageTypeId) {
                 $imageType = $type['name'] ?? null;
                 break;
             }
