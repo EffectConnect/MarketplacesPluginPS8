@@ -42,7 +42,7 @@ class InitContext
     {
         try {
             // We need to have an employee or the module hooks don't work (see LegacyHookSubscriber).
-            if (!$this->_legacyContext->getContext()->employee) {
+            if (!($this->_legacyContext->getContext()->employee instanceof Employee) || intval($this->_legacyContext->getContext()->employee->id) === 0) {
                 $employee = new Employee($connection->order_import_id_employee);
 
                 if (intval($employee->id) === 0) {
