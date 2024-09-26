@@ -3,7 +3,7 @@
 namespace EffectConnect\Marketplaces\Command;
 
 use EffectConnect\Marketplaces\Service\QueueShipments;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package EffectConnect\Marketplaces\Command
  */
-class QueueShipmentsCommand extends ContainerAwareCommand
+class QueueShipmentsCommand extends Command
 {
     /**
      * @var QueueShipments

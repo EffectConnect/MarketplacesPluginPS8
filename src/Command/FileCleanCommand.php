@@ -3,7 +3,7 @@
 namespace EffectConnect\Marketplaces\Command;
 
 use EffectConnect\Marketplaces\Helper\FileCleanHelper;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class FileCleanCommand
  * @package EffectConnect\Marketplaces\Command
  */
-class FileCleanCommand extends ContainerAwareCommand
+class FileCleanCommand extends Command
 {
     /**
      * FileCleanCommand configuration.

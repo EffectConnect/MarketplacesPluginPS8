@@ -7,7 +7,7 @@ use EffectConnect\Marketplaces\Model\Connection;
 use EffectConnect\Marketplaces\Model\OfferExportQueue;
 use EffectConnect\Marketplaces\Service\Api\OfferExportApi;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class OfferExportHandleQueueCommand
  * @package EffectConnect\Marketplaces\Command
  */
-class OfferExportHandleQueueCommand extends ContainerAwareCommand
+class OfferExportHandleQueueCommand extends Command
 {
     /**
      * @var OfferExportApi

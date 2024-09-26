@@ -5,7 +5,7 @@ namespace EffectConnect\Marketplaces\Command;
 use EffectConnect\Marketplaces\Exception\TrackingExportFailedException;
 use EffectConnect\Marketplaces\Model\Connection;
 use EffectConnect\Marketplaces\Service\Api\TrackingExportApi;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class TrackingExportCommand
  * @package EffectConnect\Marketplaces\Command
  */
-class TrackingExportCommand extends ContainerAwareCommand
+class TrackingExportCommand extends Command
 {
     /**
      * @var TrackingExportApi
