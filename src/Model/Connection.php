@@ -111,6 +111,11 @@ class Connection extends AbstractModel
     public $order_import_api_call_timeout;
 
     /**
+     * @var string|null
+     */
+    public $order_import_invoice_payment_title;
+
+    /**
      * @var array
      */
     public static $definition = [
@@ -207,7 +212,13 @@ class Connection extends AbstractModel
                 'required'   => false,
                 'validate'   => 'isUnsignedInt',
                 'allow_null' => true,
-            ]
+            ],
+            'order_import_invoice_payment_title' => [
+                'type'       => self::TYPE_STRING,
+                'required'   => false,
+                'size'       => 255,
+                'allow_null' => true,
+            ],
         ]
     ];
 
@@ -253,6 +264,7 @@ class Connection extends AbstractModel
                     `order_import_external_fulfilment` VARCHAR(64) NOT NULL,
                     `order_import_send_emails` TINYINT(1) NOT NULL DEFAULT \'0\',
                     `order_import_api_call_timeout` INT(11) UNSIGNED NULL DEFAULT NULL,
+                    `order_import_invoice_payment_title` VARCHAR(255) NULL DEFAULT NULL,
                     PRIMARY KEY (`id_connection`)
                     ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8')
             ;
@@ -292,6 +304,15 @@ class Connection extends AbstractModel
     public static function addDbFieldCatalogExportImageType()
     {
         return Db::getInstance()->execute('ALTER TABLE  `' . _DB_PREFIX_ . self::$definition['table'] . '` ADD COLUMN `catalog_export_id_image_type` INT(11) UNSIGNED NULL DEFAULT NULL AFTER `catalog_export_skip_unavailable_for_order`');
+    }
+
+    /**
+     * Version 4.0.11 database migration.
+     * @return bool
+     */
+    public static function addDbFieldOrderImportInvoicePaymentTitle()
+    {
+        return Db::getInstance()->execute('ALTER TABLE  `' . _DB_PREFIX_ . self::$definition['table'] . '` ADD COLUMN `order_import_invoice_payment_title` VARCHAR(255) NULL DEFAULT NULL AFTER `order_import_api_call_timeout`');
     }
 
     /**
