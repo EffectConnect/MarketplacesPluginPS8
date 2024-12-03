@@ -24,7 +24,7 @@ class EffectConnect_Marketplacespayment extends PaymentModule
 	{
 		$this->name                   = 'effectconnect_marketplacespayment';
 		$this->tab                    = 'payments_gateways';
-		$this->version                = '3.0.1';
+		$this->version                = '3.0.2';
 		$this->author                 = 'EffectConnect';
 		$this->controllers            = [];
 		$this->is_eu_compatible       = 1;
