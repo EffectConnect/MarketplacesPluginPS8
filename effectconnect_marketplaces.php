@@ -44,7 +44,7 @@ class EffectConnect_Marketplaces extends Module
         $this->bootstrap                = true;
         $this->ps_versions_compliancy   = [
             'min'   => '8.0.0',
-            'max'   => '8.1.99'
+            'max'   => '8.2.99'
         ];
 
         parent::__construct();
