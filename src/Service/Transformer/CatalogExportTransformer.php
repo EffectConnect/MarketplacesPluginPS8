@@ -544,7 +544,7 @@ class CatalogExportTransformer extends AbstractTransformer
         }
 
         // Attributes
-        $attributes = $this->getProductAttributes($product);
+        $attributes = $this->getProductAttributes($product, $idCombination);
         if (count($attributes) > 0)
         {
             $productOptionExport['attributes']['attribute'] = $attributes;
@@ -722,8 +722,10 @@ class CatalogExportTransformer extends AbstractTransformer
         $this->_imageType = $imageType;
     }
 
-    /*
+    /**
      * Checks if shop has Vendit warehouse support.
+     *
+     * @return void
      */
     protected function loadVenditWarehouses()
     {
@@ -844,15 +846,17 @@ class CatalogExportTransformer extends AbstractTransformer
 
     /**
      * @param Product $product
+     * @param int|null $idCombination
      * @return array
      */
-    protected function getProductAttributes(Product $product)
+    protected function getProductAttributes(Product $product, int $idCombination = null)
     {
         // Get fixed attributes
         $attributesExport = array_merge(
             $this->getProductAttributeAvailableForOrder($product),
             $this->getProductAttributeDimensions($product),
-            $this->getProductAttributeVenditWarehouse($product)
+            $this->getProductAttributeVenditWarehouse($product),
+            $this->getProductAttributeCombinations($product, $idCombination)
         );
 
         $attributeValuesExport = [];
@@ -1253,6 +1257,69 @@ class CatalogExportTransformer extends AbstractTransformer
 
             $attributesExport[$warehouseAttributeCode] = [
                 'code' => $warehouseAttributeCode,
+                'names' => [
+                    'name' => $attributeNames,
+                ],
+                'values' => [
+                    'value' => $attributeValuesExport,
+                ],
+            ];
+        }
+
+        return $attributesExport;
+    }
+
+    /**
+     * @param Product $product
+     * @param int|null $idCombination
+     * @return array
+     */
+    protected function getProductAttributeCombinations(Product $product, int $idCombination = null)
+    {
+        $attributesExport = [];
+
+        $combinationsData = $product->getAttributeCombinationsById($idCombination, $this->getDefaultLanguage());
+        foreach ($combinationsData as $combinationIndex => $combinationData) {
+            $attributeNames      = [];
+            $attributeValueNames = [];
+
+            if (empty($combinationData['id_attribute_group'] ?? '') || empty($combinationData['id_attribute'] ?? '') || empty($combinationData['group_name'] ?? '') || empty($combinationData['attribute_name'] ?? '')) {
+                continue;
+            }
+
+            $attributeCode      = 'base_attribute_' . $combinationData['id_attribute_group'];
+            $attributeValueCode = 'base_attribute_value_' . $combinationData['id_attribute'];
+
+            foreach ($this->_languages as $languageId => $language) {
+                $combinationLanguageData = $product->getAttributeCombinationsById($idCombination, $languageId)[$combinationIndex] ?? [];
+                if (empty($combinationLanguageData['id_attribute_group'] ?? '') || empty($combinationLanguageData['id_attribute'] ?? '') || empty($combinationLanguageData['group_name'] ?? '') || empty($combinationLanguageData['attribute_name'] ?? '')) {
+                    break;
+                }
+
+                $attributeNames[] = [
+                    '_attributes' => ['language' => $language['iso_code']],
+                    '_cdata'      => $combinationLanguageData['group_name'],
+                ];
+
+                $attributeValueNames[] = [
+                    '_attributes' => ['language' => $language['iso_code']],
+                    '_cdata'      => $combinationLanguageData['attribute_name'],
+                ];
+            }
+
+            if (count($attributeNames) === 0 || count($attributeValueNames) === 0) {
+                continue;
+            }
+
+            $attributeValuesExport = [
+                'code' => $attributeValueCode,
+                'names' => [
+                    'name' => $attributeValueNames,
+                ],
+            ];
+
+            $attributesExport[$attributeCode] = [
+                'code' => $attributeCode,
                 'names' => [
                     'name' => $attributeNames,
                 ],
