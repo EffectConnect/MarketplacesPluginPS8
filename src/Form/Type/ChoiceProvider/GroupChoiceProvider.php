@@ -72,7 +72,7 @@ class GroupChoiceProvider implements FormChoiceProviderInterface
                 $shops = [];
             }
 
-            $groupAttributes[$groupArray['name']] = ['data-shop-id' => '"' . implode('","', $shops) . '"'];
+            $groupAttributes[$groupArray['name']] = ['data-shop-id' => json_encode($shops)];
         }
 
         return $groupAttributes;

@@ -72,7 +72,7 @@ final class PaymentModuleChoiceProvider implements FormChoiceProviderInterface
                 $shops = [];
             }
 
-            $attributes[$paymentModule->attributes->get('displayName')] = ['data-shop-id' => '"' . implode('","', $shops) . '"']; // TODO: are these module names translatable?
+            $attributes[$paymentModule->attributes->get('displayName')] = ['data-shop-id' => json_encode($shops)]; // TODO: are these module names translatable?
         }
 
         return $attributes;

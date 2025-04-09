@@ -56,7 +56,7 @@ final class EmployeeChoiceProvider implements FormChoiceProviderInterface
                 $shops = [];
             }
 
-            $employeesAttributes[$this->getName($employeeArray)] = ['data-shop-id' => '"' . implode('","', $shops) . '"'];
+            $employeesAttributes[$this->getName($employeeArray)] = ['data-shop-id' => json_encode($shops)];
         }
 
         return $employeesAttributes;

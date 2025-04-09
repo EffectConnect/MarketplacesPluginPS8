@@ -71,7 +71,7 @@ class CarrierChoiceProvider
                 $shops = [];
             }
 
-            $carriersAttributes[$carrierArray['name']] = ['data-shop-id' => '"' . implode('","', $shops) . '"'];
+            $carriersAttributes[$carrierArray['name']] = ['data-shop-id' => json_encode($shops)];
         }
 
         return $carriersAttributes;
