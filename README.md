@@ -6,7 +6,7 @@ Use this plugin to connect your Prestashop 8 webshop with EffectConnect Marketpl
 
 ## Install module
 
-1. Download the latest release [effectconnect_marketplaces_x_x_x.zip](https://github.com/EffectConnect/MarketplacesPluginPrestashop/releases/ "Plugin ZIP") of the plugin.
+1. Download the latest release [effectconnect_marketplaces_x_x_x.zip](https://github.com/EffectConnect/MarketplacesPluginPS8/releases/ "Plugin ZIP") of the plugin.
 
 2. Upload the ZIP file in your Prestashop Environment (Modules -> Module Manager > Upload a module), select the downloaded file and the installation will start automatically.
 
