@@ -23,12 +23,13 @@ class EffectConnect_Marketplaces extends Module
      * @var string[]
      */
     protected $_hooks = array(
-        'ecOfferExportQueueSchedule' ,         // Product price or stock update (stock and price update to EffectConnect)
-        'actionValidateOrder',                 // New order was placed (stock update to EffectConnect)
-        'actionOrderStatusUpdate',             // Order state update (order state update to EffectConnect)
-        'actionObjectOrderCarrierUpdateAfter', // Order carrier update (tracking number update to EffectConnect)
-        'actionCarrierUpdate',                 // Carrier ID update
-        'displayAdminOrderSideBottom'          // Display EffectConnect order info on admin order detail page (1.7.7)
+        'ecOfferExportQueueSchedule' ,           // Product price or stock update (stock and price update to EffectConnect)
+        'actionObjectStockAvailableUpdateAfter', // PrestaShop 9 stock update in backoffice
+        'actionValidateOrder',                   // New order was placed (stock update to EffectConnect)
+        'actionOrderStatusUpdate',               // Order state update (order state update to EffectConnect)
+        'actionObjectOrderCarrierUpdateAfter',   // Order carrier update (tracking number update to EffectConnect)
+        'actionCarrierUpdate',                   // Carrier ID update
+        'displayAdminOrderSideBottom'            // Display EffectConnect order info on admin order detail page (1.7.7)
     );
 
     /**
@@ -38,13 +39,13 @@ class EffectConnect_Marketplaces extends Module
     {
         $this->name                     = 'effectconnect_marketplaces';
         $this->tab                      = 'market_place';
-        $this->version                  = '4.0.18';
+        $this->version                  = '4.1.0';
         $this->author                   = 'EffectConnect';
         $this->need_instance            = 1;
         $this->bootstrap                = true;
         $this->ps_versions_compliancy   = [
             'min'   => '8.0.0',
-            'max'   => '8.2.99'
+            'max'   => '9.0.99'
         ];
 
         parent::__construct();
@@ -297,6 +298,20 @@ class EffectConnect_Marketplaces extends Module
     {
         if (isset($params['id_product']) && intval($params['id_product']) > 0) {
             OfferExportQueue::schedule(intval($params['id_product']));
+        }
+    }
+
+    /**
+     * In PrestaShop 9 admin stock updates fire a different event.
+     *
+     * @param array $params
+     * @return void
+     */
+    public function hookActionObjectStockAvailableUpdateAfter(array $params)
+    {
+        $stockAvailable = $params['object'] ?? null;
+        if ($stockAvailable instanceof StockAvailable && $stockAvailable->id_product > 0) {
+            OfferExportQueue::schedule($stockAvailable->id_product);
         }
     }
 

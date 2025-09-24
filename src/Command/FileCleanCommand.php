@@ -29,7 +29,7 @@ class FileCleanCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void|null
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -44,6 +44,8 @@ class FileCleanCommand extends Command
         FileCleanHelper::cleanFiles($expirationDays);
 
         $output->writeln($this->generateOutputMessage(true, 'Expired tmp files cleaned successfully.'));
+
+        return 0;
     }
 
     /**

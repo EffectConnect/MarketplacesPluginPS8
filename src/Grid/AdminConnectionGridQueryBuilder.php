@@ -23,8 +23,8 @@ final class AdminConnectionGridQueryBuilder extends AbstractDoctrineQueryBuilder
                 $searchCriteria->getOrderBy(),
                 $searchCriteria->getOrderWay()
             )
-            ->setFirstResult($searchCriteria->getOffset())
-            ->setMaxResults($searchCriteria->getLimit());
+            ->setFirstResult($searchCriteria->getOffset() ?? 0)
+            ->setMaxResults($searchCriteria->getLimit() ?? 20);
 
         foreach ($searchCriteria->getFilters() as $filterName => $filterValue) {
             if ('is_active' === $filterName) {

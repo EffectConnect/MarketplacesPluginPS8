@@ -16,7 +16,6 @@ use PrestaShop\PrestaShop\Core\Module\ModuleManager;
 use PrestaShop\PrestaShop\Core\Grid\Filter\GridFilterFormFactory;
 use PrestaShop\PrestaShop\Core\Grid\GridFactory;
 use PrestaShop\PrestaShop\Core\Grid\Presenter\GridPresenter;
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +27,7 @@ use Validate;
  * Class AdminConnectionController
  * @package EffectConnect\Marketplaces\Controller
  */
-class AdminConnectionController extends FrameworkBundleAdminController
+class AdminConnectionController extends CompatibleAdminController
 {
     /**
      * @var string
@@ -128,7 +127,6 @@ class AdminConnectionController extends FrameworkBundleAdminController
         $this->_legacyShopContext           = $legacyShopContext;
         $this->_moduleManager               = $moduleManager;
         $this->_moduleDataProvider          = $moduleDataProvider;
-        parent::__construct();
     }
 
     /**
@@ -141,7 +139,7 @@ class AdminConnectionController extends FrameworkBundleAdminController
         $grid = $this->_gridFactory->getGrid($filters);
 
         return $this->render('@Modules/effectconnect_marketplaces/views/templates/admin/AdminConnectionController.index.html.twig', [
-            'layoutTitle'         => $this->trans('Connections', 'Modules.Effectconnectmarketplaces.Admin'),
+            'layoutTitle'         => $this->translate('Connections'),
             'AdminConnectionGrid' => $this->_gridPresenter->present($grid),
             'enableSidebar'       => true,
         ]);
@@ -176,16 +174,16 @@ class AdminConnectionController extends FrameworkBundleAdminController
         try {
             $result = $this->_formHandler->handle($form);
             if ($result->isSubmitted() && $result->isValid()) {
-                $this->addFlash('success', $this->trans('Connection successful created.', 'Modules.Effectconnectmarketplaces.Admin'));
+                $this->addFlash('success', $this->translate('Connection successful created.'));
                 return $this->redirectToRoute('effectconnect_marketplaces_adminconnection_index');
-          }
+            }
         } catch (Exception $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('effectconnect_marketplaces_adminconnection_index');
         }
 
         return $this->render('@Modules/effectconnect_marketplaces/views/templates/admin/AdminConnectionController.form.html.twig', [
-            'layoutTitle'             => $this->trans('Add connection', 'Modules.Effectconnectmarketplaces.Admin'),
+            'layoutTitle'             => $this->translate('Add connection'),
             'requireAddonsSearch'     => false,
             'enableSidebar'           => true,
             'AdminConnectionForm'     => $form->createView(),
@@ -203,22 +201,22 @@ class AdminConnectionController extends FrameworkBundleAdminController
      */
     public function editAction(int $recordId, Request $request)
     {
-        $form = $this->_formBuilder->getFormFor($recordId, $request->request->get('admin_connection_form') ?? []);
+        $form = $this->_formBuilder->getFormFor($recordId);
         $form->handleRequest($request);
 
         try {
             $result = $this->_formHandler->handleFor($recordId, $form);
             if ($result->isSubmitted() && $result->isValid()) {
-                $this->addFlash('success', $this->trans('Connection successful updated.', 'Modules.Effectconnectmarketplaces.Admin'));
+                $this->addFlash('success', $this->translate('Connection successful updated.'));
                 return $this->redirectToRoute('effectconnect_marketplaces_adminconnection_index');
-          }
+            }
         } catch (Exception $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('effectconnect_marketplaces_adminconnection_index');
         }
 
         return $this->render('@Modules/effectconnect_marketplaces/views/templates/admin/AdminConnectionController.form.html.twig', [
-            'layoutTitle'             => $this->trans('Edit connection', 'Modules.Effectconnectmarketplaces.Admin'),
+            'layoutTitle'             => $this->translate('Edit connection'),
             'requireAddonsSearch'     => false,
             'enableSidebar'           => true,
             'AdminConnectionForm'     => $form->createView(),
@@ -242,7 +240,7 @@ class AdminConnectionController extends FrameworkBundleAdminController
                 $record->save();
                 $this->addFlash(
                     'success',
-                    $this->trans('The connection has been successfully updated.', 'Modules.Effectconnectmarketplaces.Admin')
+                    $this->translate('The connection has been successfully updated.')
                 );
             }
         } catch (Exception $e) {
@@ -263,18 +261,18 @@ class AdminConnectionController extends FrameworkBundleAdminController
                 if ($record->delete()) {
                     $this->addFlash(
                         'success',
-                        $this->trans('Connection successfully deleted', 'Modules.Effectconnectmarketplaces.Admin')
+                        $this->translate('Connection successfully deleted')
                     );
                 } else {
                     $this->addFlash(
                         'error',
-                        $this->trans('Connection delete failed', 'Modules.Effectconnectmarketplaces.Admin')
+                        $this->translate('Connection delete failed')
                     );
                 }
             } else {
                 $this->addFlash(
                     'error',
-                    $this->trans('Internal error: recordId is invalid', 'Modules.Effectconnectmarketplaces.Admin')
+                    $this->translate('Internal error: recordId is invalid')
                 );
             }
         } catch (Exception $e) {
@@ -323,24 +321,24 @@ class AdminConnectionController extends FrameworkBundleAdminController
             try {
                 $result = symlink('effectconnect_marketplaces/payment', $this->paymentModulePath);
                 if ($result !== true) {
-                    $this->addFlash('error', $this->trans('The payment module could not be symlinked.', 'Modules.Effectconnectmarketplaces.Admin'));
+                    $this->addFlash('error', $this->translate('The payment module could not be symlinked.'));
                     return $this->redirect($request->headers->get('referer'));
                 }
             } catch (Exception $e) {
-                $this->addFlash('error', $this->trans('The payment module could not be symlinked (message: %s).', 'Modules.Effectconnectmarketplaces.Admin', [$e->getMessage()]));
+                $this->addFlash('error', $this->translate('The payment module could not be symlinked (message: %s).', [$e->getMessage()]));
                 return $this->redirect($request->headers->get('referer'));
             }
         }
 
         // Is the module correctly symlinked?
         if (!$this->paymentModuleExists()) {
-            $this->addFlash('error', $this->trans('The payment module is not correctly symlinked.', 'Modules.Effectconnectmarketplaces.Admin', [$e->getMessage()]));
+            $this->addFlash('error', $this->translate('The payment module is not correctly symlinked.'));
             return $this->redirect($request->headers->get('referer'));
         }
 
         // Is the module already installed and enabled?
         if ($this->paymentModuleIsActive()) {
-            $this->addFlash('success', $this->trans('The payment module was already installed and can be used now.', 'Modules.Effectconnectmarketplaces.Admin', [$e->getMessage()]));
+            $this->addFlash('success', $this->translate('The payment module was already installed and can be used now.'));
             return $this->redirect($request->headers->get('referer'));
         }
 
@@ -349,14 +347,14 @@ class AdminConnectionController extends FrameworkBundleAdminController
             try {
                 $result = $this->_moduleManager->enable($this->paymentModuleName);
                 if ($result !== true) {
-                    $this->addFlash('error', $this->trans('The payment module could not be enabled.', 'Modules.Effectconnectmarketplaces.Admin'));
+                    $this->addFlash('error', $this->translate('The payment module could not be enabled.'));
                     return $this->redirect($request->headers->get('referer'));
                 } else {
-                    $this->addFlash('success', $this->trans('The payment module was successfully enabled and can be used now.', 'Modules.Effectconnectmarketplaces.Admin'));
+                    $this->addFlash('success', $this->translate('The payment module was successfully enabled and can be used now.'));
                     return $this->redirect($request->headers->get('referer'));
                 }
             } catch (Exception $e) {
-                $this->addFlash('error', $this->trans('The payment module could not be enabled (message: %s).', 'Modules.Effectconnectmarketplaces.Admin', [$e->getMessage()]));
+                $this->addFlash('error', $this->translate('The payment module could not be enabled (message: %s).', [$e->getMessage()]));
                 return $this->redirect($request->headers->get('referer'));
             }
         }
@@ -366,18 +364,18 @@ class AdminConnectionController extends FrameworkBundleAdminController
             try {
                 $result = $this->_moduleManager->install($this->paymentModuleName);
                 if ($result !== true) {
-                    $this->addFlash('error', $this->trans('The payment module could not be installed.', 'Modules.Effectconnectmarketplaces.Admin'));
+                    $this->addFlash('error', $this->translate('The payment module could not be installed.'));
                     return $this->redirect($request->headers->get('referer'));
                 } else {
                     // Save our module ID to the configuration
                     $ecPaymentModuleId = $this->_moduleDataProvider->getModuleIdByName($this->paymentModuleName);
                     Configuration::updateGlobalValue(ConfigurationKeys::EC_DEFAULT_PAYMENT_MODULE_ID, $ecPaymentModuleId);
 
-                    $this->addFlash('success', $this->trans('The payment module was successfully installed and can be used now.', 'Modules.Effectconnectmarketplaces.Admin'));
+                    $this->addFlash('success', $this->translate('The payment module was successfully installed and can be used now.'));
                     return $this->redirect($request->headers->get('referer'));
                 }
             } catch (Exception $e) {
-                $this->addFlash('error', $this->trans('The payment module could not be installed (message: %s).', 'Modules.Effectconnectmarketplaces.Admin', [$e->getMessage()]));
+                $this->addFlash('error', $this->translate('The payment module could not be installed (message: %s).', [$e->getMessage()]));
                 return $this->redirect($request->headers->get('referer'));
             }
         }

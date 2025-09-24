@@ -19,19 +19,18 @@ use EffectConnect\Marketplaces\Helper\FileHelper;
 use EffectConnect\Marketplaces\Helper\XmlHelper;
 use EffectConnect\Marketplaces\Model\Connection;
 use EffectConnect\Marketplaces\LegacyWrappers\CategoryLanguage;
+use EffectConnect\Marketplaces\LegacyWrappers\FeatureService;
+use EffectConnect\Marketplaces\LegacyWrappers\ProductService;
 use Exception;
 use LogicException;
-use PrestaShop\PrestaShop\Adapter\Category\CategoryDataProvider;
 use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShop\PrestaShop\Adapter\Currency\CurrencyDataProvider;
-use PrestaShop\PrestaShop\Adapter\Feature\FeatureDataProvider;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
-use PrestaShop\PrestaShop\Adapter\Product\ProductDataProvider;
 use EffectConnect\Marketplaces\Service\ProductSearch\ProductSearchContext;
 use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
 use Product;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class CatalogExportTransformer
@@ -65,19 +64,14 @@ class CatalogExportTransformer extends AbstractTransformer
     protected $_configuration;
 
     /**
-     * @var ProductDataProvider
+     * @var ProductService
      */
-    protected $_productDataProvider;
+    protected $_productService;
 
     /**
-     * @var FeatureDataProvider
+     * @var FeatureService
      */
-    protected $_featureDataProvider;
-
-    /**
-     * @var CategoryDataProvider
-     */
-    protected $_categoryDataProvider;
+    protected $_featureService;
 
     /**
      * @var CategoryLanguage
@@ -110,11 +104,6 @@ class CatalogExportTransformer extends AbstractTransformer
     /**
      * @var array
      */
-    protected $_categoryLanguageData = [];
-
-    /**
-     * @var array
-     */
     protected $_featureLanguageData = [];
 
     /**
@@ -141,9 +130,8 @@ class CatalogExportTransformer extends AbstractTransformer
      * @param TranslatorInterface $translator
      * @param LoggerHelper $loggerHelper
      * @param Configuration $configuration
-     * @param ProductDataProvider $productDataProvider
-     * @param FeatureDataProvider $featureDataProvider
-     * @param CategoryDataProvider $categoryDataProvider
+     * @param ProductService $productService
+     * @param FeatureService $featureService
      * @param CategoryLanguage $categoryLanguage
      * @param ProductSearchProvider $productSearchProvider
      * @param PriceFormatter $priceFormatter
@@ -155,17 +143,15 @@ class CatalogExportTransformer extends AbstractTransformer
         TranslatorInterface $translator,
         LoggerHelper $loggerHelper,
         Configuration $configuration,
-        ProductDataProvider $productDataProvider,
-        FeatureDataProvider $featureDataProvider,
-        CategoryDataProvider $categoryDataProvider,
+        ProductService $productService,
+        FeatureService $featureService,
         CategoryLanguage $categoryLanguage,
         ProductSearchProvider $productSearchProvider,
         PriceFormatter $priceFormatter
     ) {
         $this->_configuration         = $configuration;
-        $this->_productDataProvider   = $productDataProvider;
-        $this->_featureDataProvider   = $featureDataProvider;
-        $this->_categoryDataProvider  = $categoryDataProvider;
+        $this->_productService        = $productService;
+        $this->_featureService        = $featureService;
         $this->_categoryLanguage      = $categoryLanguage;
         $this->_productSearchProvider = $productSearchProvider;
         $this->_priceFormatter        = $priceFormatter;
@@ -622,7 +608,7 @@ class CatalogExportTransformer extends AbstractTransformer
         foreach (array_keys($this->_languageIsoCodeById) as $idLang)
         {
             try {
-                $product = $this->_productDataProvider->getProduct($idProduct, true, $idLang, $this->getShopId());
+                $product = $this->_productService->getProduct($idProduct, true, $idLang, $this->getShopId());
             } catch (LogicException $e) {
                 throw new ProductLoadException('Could not load language data');
             }
@@ -692,10 +678,10 @@ class CatalogExportTransformer extends AbstractTransformer
     {
         foreach (array_keys($this->_languageIsoCodeById) as $languageId)
         {
-            foreach ($this->_featureDataProvider::getFeatures($languageId) as $feature)
+            foreach ($this->_featureService->getFeatures($languageId) as $feature)
             {
                 $featureId     = intval($feature['id_feature']);
-                $featureValues = $this->_featureDataProvider::getFeatureValuesWithLang($languageId, $featureId, true);
+                $featureValues = $this->_featureService->getFeatureValuesWithLang($languageId, $featureId, true);
                 foreach ($featureValues as $featureValue)
                 {
                     $featureValueId                             = intval($featureValue['id_feature_value']);

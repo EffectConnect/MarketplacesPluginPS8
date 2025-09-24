@@ -67,7 +67,7 @@ class LoggerHelper implements FilePathInterface
             static::$_loggers[$process] = new Logger(static::CHANNEL);
         }
 
-        static::$_loggers[$process]::setTimezone(new DateTimeZone(static::TIME_ZONE));
+        static::$_loggers[$process]->setTimezone(new DateTimeZone(static::TIME_ZONE));
 
         return static::$_loggers[$process];
     }

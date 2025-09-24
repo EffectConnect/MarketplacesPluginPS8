@@ -128,14 +128,14 @@ services:
   # Form Handler
   effectconnect_marketplaces.adminconnection.adminconnectionform.form_handler:
     class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
-    factory: 'prestashop.core.form.identifiable_object.handler.form_handler_factory:create'
+    factory: ['@prestashop.core.form.identifiable_object.handler.form_handler_factory', 'create']
     arguments:
       - '@effectconnect_marketplaces.adminconnection.adminconnectionform.data_handler'
 
   # Form Builder
   effectconnect_marketplaces.adminconnection.adminconnectionform.form_builder:
     class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
-    factory: 'prestashop.core.form.builder.form_builder_factory:create'
+    factory: ['@prestashop.core.form.builder.form_builder_factory', 'create']
     arguments:
       - 'EffectConnect\Marketplaces\Form\AdminConnectionFormType'
       - '@effectconnect_marketplaces.adminconnection.adminconnectionform.data_provider'
@@ -143,6 +143,8 @@ services:
   # Controller
   EffectConnect\Marketplaces\Controller\AdminConnectionController:
     public: true
+    autowire: true
+    autoconfigure: true
     class: EffectConnect\Marketplaces\Controller\AdminConnectionController
     arguments:
       - '@effectconnect_marketplaces.adminconnection.adminconnectionform.form_builder'

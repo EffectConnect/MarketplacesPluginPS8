@@ -6,7 +6,6 @@ use EffectConnect\Marketplaces\Exception\FileZipCreationFailedException;
 use EffectConnect\Marketplaces\Helper\FileCleanHelper;
 use EffectConnect\Marketplaces\Helper\FileDownloadHelper;
 use EffectConnect\Marketplaces\Helper\FilePathInterface;
-use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class AdminLogController
  * @package EffectConnect\Marketplaces\Controller
  */
-class AdminLogController extends FrameworkBundleAdminController
+class AdminLogController extends CompatibleAdminController
 {
     /**
      * @param Request $request
@@ -26,7 +25,7 @@ class AdminLogController extends FrameworkBundleAdminController
     public function indexAction(Request $request)
     {
         return $this->render('@Modules/effectconnect_marketplaces/views/templates/admin/LogController.index.html.twig', [
-            'layoutTitle'        => $this->trans('Logs', 'Modules.Effectconnectmarketplaces.Admin'),
+            'layoutTitle'        => $this->translate('Logs'),
             'enableSidebar'      => true,
             'dataFolder'         => realpath(FilePathInterface::DATA_DIRECTORY),
             'fileExpirationDays' => FileCleanHelper::TMP_FILE_EXPIRATION_DAYS,
@@ -42,7 +41,7 @@ class AdminLogController extends FrameworkBundleAdminController
         try {
             $zipFileName = FileDownloadHelper::downloadDataFolderZip();
         } catch (FileZipCreationFailedException $e) {
-            $this->addFlash('error', $this->trans($e->getMessage(), 'Modules.Effectconnectmarketplaces.Admin'));
+            $this->addFlash('error', $this->translate($e->getMessage()));
             return $this->redirectToRoute('effectconnect_marketplaces_admin_log_index');
         }
 

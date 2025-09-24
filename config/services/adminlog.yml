@@ -1,0 +1,9 @@
+services:
+
+  EffectConnect\Marketplaces\Controller\AdminLogController:
+    public: true
+    autowire: true
+    autoconfigure: true
+    class: EffectConnect\Marketplaces\Controller\AdminLogController
+    tags:
+      - { name: controller.service_arguments }

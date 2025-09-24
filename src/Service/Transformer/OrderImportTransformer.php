@@ -36,7 +36,7 @@ use PrestaShopException;
 use Product;
 use SpecificPrice;
 use State;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Tools;
 use Validate;
 use TaxManagerFactory;

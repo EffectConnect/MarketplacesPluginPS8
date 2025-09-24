@@ -4,7 +4,7 @@ namespace EffectConnect\Marketplaces\Form\Type\ChoiceProvider;
 
 use EffectConnect\Marketplaces\Enums\ExternalFulfilment;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ExternalFulfilmentChoiceProvider

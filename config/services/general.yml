@@ -8,6 +8,12 @@ services:
   effectconnect.marketplaces.service.product_search.product_search_provider:
     class: EffectConnect\Marketplaces\Service\ProductSearch\ProductSearchProvider
 
+  effectconnect.marketplaces.legacy_wrappers.product_service:
+    class: EffectConnect\Marketplaces\LegacyWrappers\ProductService
+
+  effectconnect.marketplaces.legacy_wrappers.feature_service:
+    class: EffectConnect\Marketplaces\LegacyWrappers\FeatureService
+
   effectconnect.marketplaces.helper.logger_helper:
     class: EffectConnect\Marketplaces\Helper\LoggerHelper
 
@@ -25,9 +31,8 @@ services:
     arguments:
       - '@effectconnect.marketplaces.helper.logger_helper'
       - '@prestashop.adapter.legacy.configuration'
-      - '@prestashop.adapter.data_provider.product'
-      - '@prestashop.adapter.data_provider.feature'
-      - '@prestashop.adapter.data_provider.category'
+      - '@effectconnect.marketplaces.legacy_wrappers.product_service'
+      - '@effectconnect.marketplaces.legacy_wrappers.feature_service'
       - '@effectconnect.marketplaces.object.category_language'
       - '@effectconnect.marketplaces.service.product_search.product_search_provider'
       - '@prestashop.adapter.formatter.price'

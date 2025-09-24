@@ -6,7 +6,7 @@ use EffectConnect\Marketplaces\LegacyWrappers\LegacyModule;
 use PrestaShop\PrestaShop\Adapter\Module\PaymentModuleListProvider;
 use PrestaShop\PrestaShop\Core\Form\FormChoiceProviderInterface;
 use PrestaShopDatabaseException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class PaymentModuleChoiceProvider
