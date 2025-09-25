@@ -608,7 +608,7 @@ class CatalogExportTransformer extends AbstractTransformer
         foreach (array_keys($this->_languageIsoCodeById) as $idLang)
         {
             try {
-                $product = $this->_productService->getProduct($idProduct, true, $idLang, $this->getShopId());
+                $product = $this->_productService->getProduct($idProduct, $idLang, $this->getShopId());
             } catch (LogicException $e) {
                 throw new ProductLoadException('Could not load language data');
             }
