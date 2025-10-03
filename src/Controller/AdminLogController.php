@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AdminLogController
@@ -19,13 +20,26 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminLogController extends CompatibleAdminController
 {
     /**
+     * @var TranslatorInterface
+     */
+    protected TranslatorInterface $_translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->_translator = $translator;
+    }
+
+    /**
      * @param Request $request
      * @return Response|null
      */
     public function indexAction(Request $request)
     {
         return $this->render('@Modules/effectconnect_marketplaces/views/templates/admin/LogController.index.html.twig', [
-            'layoutTitle'        => $this->translate('Logs'),
+            'layoutTitle'        => $this->_translator->trans('Logs', [], 'Modules.Effectconnectmarketplaces.Admin'),
             'enableSidebar'      => true,
             'dataFolder'         => realpath(FilePathInterface::DATA_DIRECTORY),
             'fileExpirationDays' => FileCleanHelper::TMP_FILE_EXPIRATION_DAYS,
@@ -41,7 +55,7 @@ class AdminLogController extends CompatibleAdminController
         try {
             $zipFileName = FileDownloadHelper::downloadDataFolderZip();
         } catch (FileZipCreationFailedException $e) {
-            $this->addFlash('error', $this->translate($e->getMessage()));
+            $this->addFlash('error', $this->_translator->trans($e->getMessage(), [], 'Modules.Effectconnectmarketplaces.Admin'));
             return $this->redirectToRoute('effectconnect_marketplaces_admin_log_index');
         }
 

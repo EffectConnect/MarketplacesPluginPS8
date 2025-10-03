@@ -156,3 +156,4 @@ services:
       - '@effectconnect.marketplaces.legacy_wrappers.legacy_shop_context'
       - '@prestashop.module.manager'
       - '@prestashop.adapter.data_provider.module'
+      - '@translator'

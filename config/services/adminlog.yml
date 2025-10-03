@@ -5,5 +5,5 @@ services:
     autowire: true
     autoconfigure: true
     class: EffectConnect\Marketplaces\Controller\AdminLogController
-    tags:
-      - { name: controller.service_arguments }
+    arguments:
+      - '@translator'
