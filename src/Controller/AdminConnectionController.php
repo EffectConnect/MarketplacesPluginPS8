@@ -98,7 +98,7 @@ class AdminConnectionController extends CompatibleAdminController
     /**
      * @var TranslatorInterface
      */
-    protected TranslatorInterface $_translator;
+    protected $_translator;
 
     /**
      * AdminConnectionController constructor.

@@ -58,13 +58,16 @@ Optional (see explanation below):
 
 When setting up cron tasks make sure to use the correct PHP version that matches your Prestashop installation:
 
-| Prestashop Version | PHP version   |
-|--------------------|---------------|
-| Prestashop 8       | PHP 7.2 - 8.2 |
+| Prestashop Version | PHP version     |
+|--------------------|-----------------|
+| Prestashop 8.0     | PHP 7.2.5 - 8.1 |
+| Prestashop 8.1     | PHP 7.4 - 8.2   |
+| Prestashop 8.1.4+  | PHP 8.0 - 8.2   |
+| Prestashop 9       | PHP 8.1 - 8.4   |
 
 You can check your default PHP version by running `php -v` in your SSH console.
 If the default version does not match the table above, ask your server administrator how to run commands in another PHP version. 
-For example on some servers you can just replace `php` by `php72` (or any desired version).    
+For example on some servers you can just replace `php` by `php82` (or any desired version).    
 
 ## Explanation of commands
 

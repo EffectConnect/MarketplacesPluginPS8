@@ -22,7 +22,7 @@ class AdminLogController extends CompatibleAdminController
     /**
      * @var TranslatorInterface
      */
-    protected TranslatorInterface $_translator;
+    protected $_translator;
 
     /**
      * @param TranslatorInterface $translator
